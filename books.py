@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 
 app = FastAPI()
 
@@ -33,7 +33,9 @@ async def read_category_by_query(category: str):
     return books_to_return
 
 
-@app.get("/books/{book_author}/")
+@app.get("/books/{book_author}/")  
+# has a sturcture of: /books/path parameter/query parameter; 
+#   so every URL that can be viewed as this sturcture will be processed in this mathod -- careful with the order of the methods
 async def read_author_category_by_query(boook_author: str, category: str):
     books_to_rerurn = []
     for book in BOOKS:
@@ -42,3 +44,23 @@ async def read_author_category_by_query(boook_author: str, category: str):
             books_to_rerurn.append(book)
     
     return books_to_rerurn
+
+
+@app.post("/books/create_book")
+async def create_book(new_book=Body()):
+    BOOKS.append(new_book)
+
+
+@app.put("/books/update_book")
+async def upate_book(updated_book=Body()):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get('title').casefold() == updated_book.get('title').casefold():
+            BOOKS[i] = updated_book
+            
+
+@app.delete("/books/delete_book/{book_title}")
+async def delete_boook(book_title: str):
+    for i in range(len(BOOKS)):
+        if BOOKS[i].get('title').casefold() == book_title.casefold():
+            BOOKS.pop(i)
+            break

@@ -1,3 +1,5 @@
+https://www.bilibili.com/video/BV1jS421d7bL?spm_id_from=333.788.player.switch&vd_source=6ff832c6907419d7da467346d3467ef1&p=14
+
 swagger: http://127.0.0.1:8000/docs 
 uvicorn books:app --reload
 
@@ -8,3 +10,9 @@ dynamic parameter(path parameter which get passed through URL)
 
 # 008
 query parameter @app.get("/books/") -- filter things
+
+# 010 
+post request method -- create things
+
+# 011
+put request method -- update things
