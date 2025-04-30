@@ -1,0 +1,6 @@
+swagger: http://127.0.0.1:8000/docs 
+uvicorn books:app --reload
+
+static parameter
+dynamic parameter(path parameter which get passed through URL)
+%20 means space in URL " "
