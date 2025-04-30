@@ -1,6 +1,10 @@
 swagger: http://127.0.0.1:8000/docs 
 uvicorn books:app --reload
 
-static parameter
+# 007
+static parameter @app.get("/books/{book_title}") -- find things
 dynamic parameter(path parameter which get passed through URL)
 %20 means space in URL " "
+
+# 008
+query parameter @app.get("/books/") -- filter things
