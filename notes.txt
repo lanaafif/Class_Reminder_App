@@ -3,6 +3,8 @@ https://www.bilibili.com/video/BV1jS421d7bL?spm_id_from=333.788.player.switch&vd
 swagger: http://127.0.0.1:8000/docs 
 uvicorn books:app --reload
 
+# project 1
+
 # 007
 static parameter @app.get("/books/{book_title}") -- find things
 dynamic parameter(path parameter which get passed through URL)
@@ -16,3 +18,9 @@ post request method -- create things
 
 # 011
 put request method -- update things
+
+
+# project 2
+
+# 005
+pydantics -- a python library that helps you validate data and serialize it to JSON
