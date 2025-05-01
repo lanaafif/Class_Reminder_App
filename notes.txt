@@ -24,3 +24,6 @@ put request method -- update things
 
 # 005
 pydantics -- a python library that helps you validate data and serialize it to JSON
+
+#018
+status code 

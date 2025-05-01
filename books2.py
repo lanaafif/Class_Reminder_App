@@ -1,4 +1,4 @@
-from fastapi import Body, FastAPI
+from fastapi import FastAPI, Path, Query, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -11,13 +11,15 @@ class Book:
     author: str
     description: str
     rating: int
+    published_date: int
 
-    def __init__(self, id: int, title: str, author: str, description: str, rating: int):
+    def __init__(self, id: int, title: str, author: str, description: str, rating: int, published_date):
         self.id = id
         self.title = title
         self.author = author
         self.description = description
         self.rating = rating
+        self.published_date = published_date
 
 
 class BookRequest(BaseModel):
@@ -26,6 +28,7 @@ class BookRequest(BaseModel):
     author: str = Field(min_length = 1)
     description: str = Field(min_length = 1, max_length = 100)
     rating: int = Field(gt = 0, lt = 6)
+    published_date: int = Field(gt = 1999, lt = 2031)
 
     class Config:
         json_schema_extra = {
@@ -33,18 +36,19 @@ class BookRequest(BaseModel):
                 "title": "A new book",
                 "author": "codingwithroby",
                 "description": "A good book",
-                "rating": 5
+                "rating": 5,
+                "published_date": 2023
             }
         }
 
 
 BOOKS = [
-    Book(1, 'Computer Science Pro', 'codingwithroby', 'A very nice book', 5),
-    Book(2, 'Learn fastapi', 'codingwithroby', 'A good book', 5),
-    Book(3, 'Learn python', 'codingwithroby', 'A ok book', 5),
-    Book(4, 'Learnnnnn', 'author 1', 'good', 2),
-    Book(5, 'Learn1', 'author 2', 'good', 3),
-    Book(6, 'Learn2', 'author 3', 'good', 1),
+    Book(1, 'Computer Science Pro', 'codingwithroby', 'A very nice book', 5, 2023),
+    Book(2, 'Learn fastapi', 'codingwithroby', 'A good book', 5, 2023),
+    Book(3, 'Learn python', 'codingwithroby', 'A ok book', 5, 2024),
+    Book(4, 'Learnnnnn', 'author 1', 'good', 2, 2000),
+    Book(5, 'Learn1', 'author 2', 'good', 3, 2001),
+    Book(6, 'Learn2', 'author 3', 'good', 1, 2002),
 ]
 
 
@@ -54,14 +58,15 @@ async def read_all_books():
 
 
 @app.get("/books/{book_id}")
-async def read_book(book_id: int):
+async def read_book(book_id: int = Path(gt = 0)):
     for book in BOOKS:
         if book.id == book_id:
             return book
+    raise HTTPException(status_code = 404, detail = 'Item not found')
         
 
 @app.get("/books/")
-async def read_book_by_rating(book_rating: int):
+async def read_book_by_rating(book_rating: int = Query(gt = 0, lt = 6)):
     books_to_return = []
     for book in BOOKS:
         if book.rating == book_rating:
@@ -69,11 +74,24 @@ async def read_book_by_rating(book_rating: int):
     return books_to_return
 
 
+@app.get("/books/publish/")
+async def read_book_by_published_date(date: int = Query(gt = 1999, lt = 2031)):
+    books_to_return = []
+    for book in BOOKS:
+        if book.published_date == date:
+            books_to_return.append(book)
+    return books_to_return
+
+
 @app.put("/books/update_book")
 async def update_book(book: BookRequest):
+    book_changed = False
     for i in range(len(BOOKS)):
         if BOOKS[i].id == book.id:
             BOOKS[i] = book
+            book_changed = True
+    if not book_changed:
+        raise HTTPException(status_code=404, detail='Item not found')
 
 
 def find_book_id(book: Book):
@@ -91,8 +109,12 @@ async def create_book(book_request: BookRequest):
 
 
 @app.delete("/books/{book_id}")
-async def delete_book(book_id: int):
+async def delete_book(book_id: int = Path(gt = 0)):
+    book_changed = False
     for i in range(len(BOOKS)):
         if BOOKS[i].id == book_id:
             BOOKS.pop(i)
+            book_changed = True
             break
+    if not book_changed:
+        raise HTTPException(status_code=404, detail='Item not found')
