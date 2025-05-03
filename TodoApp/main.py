@@ -5,10 +5,14 @@ from models import Todos
 from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
+from routers import auth
 
 app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
+
+app.include_router(auth.router)
+
 
 def get_db():
     # dependency injection
