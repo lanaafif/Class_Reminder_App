@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, Path, status
+from pydantic import BaseModel, Field
 import models
 from models import Todos
 from database import engine, SessionLocal
@@ -10,6 +11,7 @@ app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
 
 def get_db():
+    # dependency injection
     db = SessionLocal()
     try:
         yield db
@@ -17,6 +19,35 @@ def get_db():
         db.close()
 
 
-@app.get("/")
-async def read_all(db: Annotated[Session, Depends(get_db)]):
+db_dependency = Annotated[Session, Depends(get_db)]
+
+
+class TodoRequest(BaseModel):
+    title: str = Field(min_length=3)
+    description: str = Field(min_length=3, max_length=100)
+    priority: int = Field(gt=0, le=5)
+    complete: bool
+
+
+@app.get("/", status_code=status.HTTP_200_OK)
+async def read_all(db: db_dependency):
     return db.query(Todos).all()
+
+
+@app.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
+async def read_todo(db: db_dependency, todo_id: int = Path(gt=0)):
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+    # db.query(Todos) just creates a query object, it doesn't execute the query 
+    # "创建了一个可链式调用的查询语句构建器"
+    if todo_model is not None:
+        return todo_model
+    raise HTTPException(status_code=404, detail="Todo not found")
+
+
+@app.post("/todo", status_code=status.HTTP_201_CREATED)
+async def create_todo(db: db_dependency, todo_request: TodoRequest):
+    todo_model = Todos(**todo_request.model_dump())
+    
+    db.add(todo_model)
+    db.commit()
+    
