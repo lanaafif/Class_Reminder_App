@@ -19,7 +19,29 @@ SECRET_KEY = 'c376b1e1b6112627129877f30793f8b00598adb28659f1f5f8fb6614ce38540e'
 ALGORITHM = 'HS256'  # algorithm used to encode the JWT token 
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto") 
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")  # this is the url to get the token
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token") 
+# 1.
+# /auth/token 是一个登录接口，她是你提交用户名密码后，可以查看已获取的，后端传过来的生成的 token 的接口，
+#   不是一个可以访问没有生成，没有后端传过来的结果的，查看 token 的页面。
+# 你必须提交用户名密码，验证成功后服务器才会生成并返回 token 给你在这个页面。
+# 所以这个页面的最好理解是，get token，而不是check token
+# 2. 
+# OAuth2PasswordBearer 是当这个依赖被某个接口需要时，在接口函数运行前，
+#   fastapi帮你获取前端发来的申请中带的header中的“Authorization”信息--token
+# 如果依赖获取失败了，会有自动error反馈，然后swagger也更清楚这是一个依赖项/依赖函数
+
+#refine：
+# 1.
+# /auth/token 是用于“获取 token”的接口，而不是“查看 token”的页面。
+# 用户需要向这个接口提交用户名和密码，后端验证通过后才会生成并返回 token。
+# 所以更准确地说，它是一个 “获取 token（login）” 的 API，而不是一个“查看 token” 的页面。
+
+# 2.
+# OAuth2PasswordBearer 是一个依赖项，用于在某个接口运行前，
+# 由 FastAPI 自动从请求头中提取出 "Authorization" 字段里的 Bearer Token。
+# 如果缺少 token 或格式不正确，FastAPI 会自动返回 401 错误。
+# 同时，这个依赖还能帮助 Swagger UI 显示认证按钮，提升接口文档的可用性。
+
 
 
 class CreateUserRequest(BaseModel):
