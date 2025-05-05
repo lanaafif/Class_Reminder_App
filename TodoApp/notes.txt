@@ -1,0 +1,2 @@
+JWT: the signiture is a string that encode the header and payload with a secret key,
+     to make sure the header and payload is not modified by the client in client side.
