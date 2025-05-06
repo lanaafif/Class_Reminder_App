@@ -1,2 +1,30 @@
 JWT: the signiture is a string that encode the header and payload with a secret key,
      to make sure the header and payload is not modified by the client in client side.
+
+
+“我查出来一个对象，然后想 复制它，再作为新的一行插入到数据库中，我该怎么做？”
+from copy import deepcopy
+
+# 复制对象
+new_user = deepcopy(user_model)
+
+# 关键步骤：清除主键 ID（让数据库生成新的一行）
+new_user.id = None
+
+# 可选：你可以修改一些字段
+new_user.username = "lydia_copy"
+new_user.email = "lydia2@example.com"
+
+# 插入到数据库
+db.add(new_user)
+db.commit()
+
+✅ 为什么一定要清除 ID？
+因为：
+SQLAlchemy 会根据 .id 来判断是不是新对象
+如果你不改 ID，它认为你是在 更新原对象
+清除 id = None，就让 SQLAlchemy 明确知道这是一个 新对象，要插入
+
+❗ 注意：
+你复制的数据中如果有唯一约束（如 email 唯一），你要记得改掉这些字段。
+不能简单 db.add(old_user) → 那只会当作 update。

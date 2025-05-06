@@ -41,6 +41,7 @@ async def read_all(user: user_dependency, db: db_dependency):
 
 @router.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
 async def read_todo(user:user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
+
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
     
@@ -54,6 +55,7 @@ async def read_todo(user:user_dependency, db: db_dependency, todo_id: int = Path
 
 @router.post("/todo", status_code=status.HTTP_201_CREATED)
 async def create_todo(user: user_dependency, db: db_dependency, todo_request: TodoRequest):
+
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
     # 在正式接口里这段代码是冗余的（因为已经验证过user了），但为了测试、兼容性和防御性考虑，可以保留这段判断。
@@ -68,14 +70,20 @@ async def create_todo(user: user_dependency, db: db_dependency, todo_request: To
 
 
 @router.put("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_todo(db: db_dependency, todo_request: TodoRequest, todo_id: int = Path(gt=0)):
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+async def update_todo(user: user_dependency, db: db_dependency, 
+                      todo_request: TodoRequest, todo_id: int = Path(gt=0)):
+    
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).first()
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication Failed')
+    
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
     
     # we cannot create a new updated todo and delete the old one b/c sqlalchemy try to increment the id 
     #  so the new id will be different from the old one
     # so we should directly update the existing todo 
+    # 我们不能也不应该手动设置id
     todo_model.title = todo_request.title
     todo_model.description = todo_request.description
     todo_model.priority = todo_request.priority
@@ -86,10 +94,14 @@ async def update_todo(db: db_dependency, todo_request: TodoRequest, todo_id: int
 
 
 @router.delete("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_todo(db: db_dependency, todo_id: int = Path(gt=0)):
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+async def delete_todo(user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
+
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication Failed')
+    
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).first()
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
     
-    db.query(Todos).filter(Todos.id == todo_id).delete()
+    db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).delete()
     db.commit()

@@ -68,9 +68,12 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
+# 这里的等号不是赋值，而是给一个类型对象起了一个变量名以供后面复用，视作一个类型，没有赋值
+# Annotated[...] 本质上是 “类型 + 附加元信息（metadata）” 的一种组合工具，并不限于依赖注入的场景。
 
 
 def authenticate_user(db, username: str, password: str):
+    # db: Session不是必须的，Python 是动态语言，你可以不给类型
     user = db.query(Users).filter(Users.user_name == username).first()
     if not user:
         return False
@@ -79,8 +82,8 @@ def authenticate_user(db, username: str, password: str):
     return user
 
 
-def create_access_token(username: str, user_id: int, expires_delta: timedelta):
-    encode = {'sub':username, 'id':user_id}
+def create_access_token(username: str, user_id: int, role: str, expires_delta: timedelta):
+    encode = {'sub':username, 'id':user_id, 'role':role}
     expires = datetime.now(timezone.utc) + expires_delta
     encode.update({'exp': expires})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -91,10 +94,11 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub')
         user_id: str = payload.get('id')
+        user_role: str = payload.get('role')
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                                 detail="Could not validate user.",)
-        return {'username': username, 'id': user_id}
+        return {'username': username, 'id': user_id, 'user_role': user_role}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Could not validate user.",)
@@ -103,13 +107,17 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
+    # Annotated[...] 是一种类型包装器，它“告诉 FastAPI”：这个参数值是某个类型，来自某个依赖函数
+    # 所以
+    # 此时的db有Annotated的type，而db_dependency来自依赖函数，
+    #   所以db变成了fastapi会自动注入的依赖项，而不是一个参数了
     create_user_model = Users(
         user_name=create_user_request.username,
         email=create_user_request.email,
         first_name=create_user_request.first_name,
         last_name=create_user_request.last_name,
         hashed_password=bcrypt_context.hash(create_user_request.password),
-        roles=create_user_request.role,
+        role=create_user_request.role,
         is_active=True
     )
 
@@ -124,5 +132,5 @@ async def login_for_access_token(db: db_dependency,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Could not validate user.",)
-    token = create_access_token(user.user_name, user.id, timedelta(minutes=20))
+    token = create_access_token(user.user_name, user.id, user.role, timedelta(minutes=20))
     return {'access_token': token, 'token_type': 'bearer'}

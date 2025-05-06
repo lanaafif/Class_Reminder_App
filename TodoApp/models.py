@@ -12,7 +12,7 @@ class Users(Base):
     last_name = Column(String) 
     hashed_password = Column(String) # encrypted password, not plain text
     is_active = Column(Boolean, default=True)
-    roles = Column(String) # admin?
+    role = Column(String) # admin role
 
 class Todos(Base):
     __tablename__ = 'todos'
