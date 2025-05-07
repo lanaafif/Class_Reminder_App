@@ -1,7 +1,9 @@
+### 1
 JWT: the signiture is a string that encode the header and payload with a secret key,
      to make sure the header and payload is not modified by the client in client side.
 
 
+### 2
 “我查出来一个对象，然后想 复制它，再作为新的一行插入到数据库中，我该怎么做？”
 from copy import deepcopy
 
@@ -30,4 +32,10 @@ SQLAlchemy 会根据 .id 来判断是不是新对象
 不能简单 db.add(old_user) → 那只会当作 update。
 
 
+### 3
 .\fastapienv\Scripts\activate
+
+
+### 4
+any new or does not exist class / table in the models.py, will be created by SQLAlchemy automatically when you run the app.
+but any update on existing table should be done by alembic migration.
