@@ -1,13 +1,14 @@
 from datetime import timedelta, datetime, timezone
 from typing import Annotated
 from ..database import SessionLocal
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status, Request
 from pydantic import BaseModel
 from ..models import Users
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
+from fastapi.templating import Jinja2Templates
 
 
 router = APIRouter(
@@ -71,6 +72,20 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 # 这里的等号不是赋值，而是给一个类型对象起了一个变量名以供后面复用，视作一个类型，没有赋值
 # Annotated[...] 本质上是 “类型 + 附加元信息（metadata）” 的一种组合工具，并不限于依赖注入的场景。
+
+templates = Jinja2Templates(directory="TodoApp/templates") 
+
+
+
+### Pages ###
+
+@router.get("/login-page")
+def render_login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+
+### Endpoints ###
 
 
 def authenticate_user(db, username: str, password: str):
