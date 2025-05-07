@@ -1,15 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Path, status, requests
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 from pydantic import BaseModel, Field
 from ..models import Todos
 from ..database import SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
 from .auth import get_current_user
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates 
-
-
-templates = Jinja2Templates(directory="templates")
 
 
 router = APIRouter(
@@ -39,11 +34,6 @@ class TodoRequest(BaseModel):
     priority: int = Field(gt=0, le=5)
     complete: bool
 
-
-
-@router.get("/test")
-async def test(request: requests.Request):
-    return templates.TemplateResponse("home.html", {"request": request})
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
