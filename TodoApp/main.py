@@ -14,7 +14,10 @@ Base.metadata.create_all(bind=engine)
 
 templates = Jinja2Templates(directory="TodoApp/templates")
 
-app.mount("/static", StaticFiles(directory="TodoApp/static"), name="static") # 静态文件目录
+app.mount("/static", StaticFiles(directory="TodoApp/static"), name="static") 
+# 给 /static 挂载路径起名字为 static
+# 这样在 templates 中就可以用 url_for("static", path="img/xxx.png") 来引用静态文件了
+# 得到的路径结果是 /static/img/xxx.png
 
 
 @app.get("/")
