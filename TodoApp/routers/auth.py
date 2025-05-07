@@ -74,7 +74,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 def authenticate_user(db, username: str, password: str):
     # db: Session不是必须的，Python 是动态语言，你可以不给类型
-    user = db.query(Users).filter(Users.user_name == username).first()
+    user = db.query(Users).filter(Users.username == username).first()
     if not user:
         return False
     if not bcrypt_context.verify(password, user.hashed_password):
@@ -112,7 +112,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     # 此时的db有Annotated的type，而db_dependency来自依赖函数，
     #   所以db变成了fastapi会自动注入的依赖项，而不是一个参数了
     create_user_model = Users(
-        user_name=create_user_request.username,
+        username=create_user_request.username,
         email=create_user_request.email,
         first_name=create_user_request.first_name,
         last_name=create_user_request.last_name,
@@ -132,5 +132,5 @@ async def login_for_access_token(db: db_dependency,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, 
                             detail="Could not validate user.",)
-    token = create_access_token(user.user_name, user.id, user.role, timedelta(minutes=20))
+    token = create_access_token(user.username, user.id, user.role, timedelta(minutes=20))
     return {'access_token': token, 'token_type': 'bearer'}

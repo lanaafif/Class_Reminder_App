@@ -28,3 +28,6 @@ SQLAlchemy 会根据 .id 来判断是不是新对象
 ❗ 注意：
 你复制的数据中如果有唯一约束（如 email 唯一），你要记得改掉这些字段。
 不能简单 db.add(old_user) → 那只会当作 update。
+
+
+.\fastapienv\Scripts\activate
