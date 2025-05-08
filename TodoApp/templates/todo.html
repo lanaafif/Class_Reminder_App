@@ -3,12 +3,22 @@
 <div class="container">
     <div class="card text-center">
         <div class="card-header">
-            Your Todo's!
+            <div class="card-header">
+                {% if is_teacher_view %}
+                    {{ viewed_student }}'s Todo List (Teacher View)
+                {% else %}
+                    Your Todo's!
+                {% endif %}
+            </div>            
         </div>
         <div class="card-body">
             <h5 class="card-title">
-                List of your todo's!
-            </h5>
+                {% if is_teacher_view %}
+                    Assigned tasks for {{ viewed_student }}
+                {% else %}
+                    List of your todo's!
+                {% endif %}
+            </h5>            
             <p class="card-text">
                 Information regarding stuff that needs to be complete
             </p>

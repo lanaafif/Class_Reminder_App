@@ -61,7 +61,11 @@ async def render_todo_page(request: Request, db: db_dependency):
         # ORM对象（object） → 用 . 点操作符访问属性
         # 字典（dict） → 用 ['key'] 或 .get('key') 访问键值对 (return {'username': username, 'id': user_id})
 
+        if user.get("user_role") == "admin":
+            return RedirectResponse(url="/admin/dashboard", status_code=status.HTTP_302_FOUND)
+
         return templates.TemplateResponse("todo.html", {"request": request, "todos": todos, "user": user})
+
     
     except:
         return redirect_to_login()

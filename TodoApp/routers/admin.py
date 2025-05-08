@@ -1,10 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, status, Request
 from pydantic import BaseModel, Field
 from ..models import Todos, Users
 from ..database import SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
 from .auth import get_current_user
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
+templates = Jinja2Templates(directory="TodoApp/templates")
 
 
 router = APIRouter(
@@ -26,6 +30,57 @@ db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
+#### Pages ###
+
+@router.get("/dashboard")
+async def admin_dashboard(request: Request, db: db_dependency):
+    try:
+        token = request.cookies.get('access_token')
+        if token is None:
+            raise HTTPException(status_code=401, detail="No token provided")
+
+        from .auth import get_current_user
+        user = await get_current_user(token)
+        if user.get("user_role") != "admin":
+            raise HTTPException(status_code=403, detail="Access denied")
+
+        students = db.query(Users).filter(Users.role != "admin").all()
+        return templates.TemplateResponse("admin_dashboard.html", {"request": request, "students": students})
+
+    except:
+        from .todos import redirect_to_login
+        return redirect_to_login()
+
+
+@router.get("/user/{user_id}/todos-page")
+async def view_student_todos(request: Request, user_id: int, db: db_dependency):
+    try:
+        # 从 cookie 中取 token，并验证是否是 admin
+        token = request.cookies.get('access_token')
+        from .auth import get_current_user
+        current_user = await get_current_user(token)
+
+        if current_user.get("user_role") != "admin":
+            raise HTTPException(status_code=403, detail="Access denied")
+
+        # 查询目标学生的 todo
+        todos = db.query(Todos).filter(Todos.owner_id == user_id).all()
+        student = db.query(Users).filter(Users.id == user_id).first()
+
+        return templates.TemplateResponse("todo.html", {
+            "request": request,
+            "todos": todos,
+            "user": current_user,
+            "viewed_student": student.username,
+            "is_teacher_view": True
+        })
+    except:
+        from .todos import redirect_to_login
+        return redirect_to_login()
+
+
+
+### Endpoints ###
 
 @router.get('/', status_code=status.HTTP_200_OK)
 async def read_all_todos(db: db_dependency, user: user_dependency):
