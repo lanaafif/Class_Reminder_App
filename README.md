@@ -1,117 +1,83 @@
-# FastAPI Project Setup Guide (Video P4 + SQLite Setup from P43)
+# 📚 Teacher Reminder App
 
-This guide summarizes how to move a FastAPI project to a new location and configure it with a virtual environment and SQLite support.
+A web-based platform that helps teachers assign and manage reminders for students. Teachers can send assignment, revision, or task reminders to individual students, while students manage and update their own task lists independently.
 
----
-
-## 📁 Folder Layout
-
-```
-D:\vscode\2A\fastapi\
-├── fastapienv\            # Virtual environment
-├── main.py / books.py     # API definition
-├── requirements.txt       # Dependencies
-└── .git / .vscode         # Optional
-```
+> 🚀 **Live Demo**: [https://todo-list-app-yeui.onrender.com](https://todo-list-app-yeui.onrender.com)
 
 ---
 
-## ✅ 1. Setup FastAPI Environment (from Video P4)
+## ✨ Features
 
-1. Move the entire `fastapi` folder to `D:\vscode\2A\`
-2. Recreate the virtual environment:
+### ✅ For All Users
+- Secure registration and login
+- View personal reminder list
+- Edit, complete, or delete personal reminders
+- JWT authentication via secure cookie
 
-   ```bash
-   cd D:\vscode\2A\fastapi
-   python -m venv fastapienv
-   .\fastapienv\Scripts\activate
-   ```
-3. Install dependencies:
+### 🧑‍🏫 For Teachers (Admin Role)
+- View a list of all registered students
+- View any student's reminder list
+- Add/edit/delete reminders **for any student**
+- Use a teacher-specific interface with expanded access
 
-   ```bash
-   pip install -r requirements.txt
-   # Or install manually:
-   pip install fastapi uvicorn
-   ```
-4. Configure VS Code interpreter:
-
-   * Ctrl+Shift+P → Python: Select Interpreter → choose `fastapienv\Scripts\python.exe`
+### 👩‍🎓 For Students
+- Manage only their own reminders
+- Cannot view or modify other users' data
+- Simple interface for personal use
 
 ---
 
-## 📃 2. SQLite Configuration (from Video P43)
+## 🛠️ Tech Stack
 
-To add SQLite support for data persistence:
-
-1. Install dependencies:
-
-   ```bash
-   pip install sqlalchemy sqlite3
-   ```
-
-   > Note: `sqlite3` is built-in with Python 3.7+, no need to install separately in most cases.
-
-2. Create `database.py`:
-
-   ```python
-   from sqlalchemy import create_engine
-   from sqlalchemy.orm import sessionmaker, declarative_base
-
-   DATABASE_URL = 'sqlite:///./todos.db'
-
-   engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-   SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-   Base = declarative_base()
-   ```
-
-3. Import and bind `Base` in your main app to auto-create tables:
-
-   ```python
-   import models
-   from database import engine
-
-   models.Base.metadata.create_all(bind=engine)
-   ```
-
-4. Create models in `models.py`:
-
-   ```python
-   from database import Base
-   from sqlalchemy import Column, Integer, String, Boolean
-
-   class Todos(Base):
-       __tablename__ = 'todos'
-       id = Column(Integer, primary_key=True, index=True)
-       title = Column(String)
-       description = Column(String)
-       priority = Column(Integer)
-       complete = Column(Boolean, default=False)
-   ```
+| Layer        | Tools/Frameworks                           |
+|--------------|---------------------------------------------|
+| Backend      | [FastAPI](https://fastapi.tiangolo.com/), Python 3 |
+| Frontend     | HTML, Bootstrap, Vanilla JS, Jinja2         |
+| Auth         | OAuth2 with Password Flow, JWT (cookie-based) |
+| Database     | SQLAlchemy ORM + PostgreSQL (Render-hosted) |
+| Deployment   | [Render.com](https://render.com/)           |
 
 ---
 
-## 🔧 Run the API
-
-```bash
-uvicorn books:app --reload
-```
-
-Visit:
-
-```
-http://127.0.0.1:8000/docs
-```
 
 ---
 
-## Summary
+## 🔐 Roles and Permissions
 
-| Step                | Status       |
-| ------------------- | ------------ |
-| Project moved to D: | ✅ Done       |
-| Virtual env created | ✅ Done       |
-| FastAPI installed   | ✅ Done       |
-| SQLite configured   | ✅ Done (P43) |
-| API live at /docs   | ✅ Working    |
+| Role    | Can View | Can Edit | Notes |
+|---------|----------|----------|-------|
+| Student | Own reminders only | Own reminders only | No access to others' data |
+| Teacher | All student lists | Add/edit/delete any student's reminders | Admin panel view only |
 
-You're ready to continue building!
+---
+
+## 📸 Sample Use Cases
+
+- **Teacher:** “Remind John to review for Thursday’s quiz.”
+- **Student:** Sees reminder on login, marks complete after finishing.
+- **Teacher:** Clicks into a student to track progress or modify items.
+
+---
+
+## 💡 Future Ideas
+
+- Add due dates and filtering
+- Send automated reminder emails
+- Role-based dashboard UI
+- Reminder completion analytics
+
+---
+
+## 👤 Author
+
+**Lydia Gao**  
+Computer Science @ University of Waterloo  
+Backend-focused full-stack developer with project experience in AI, UI, and systems design.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+
