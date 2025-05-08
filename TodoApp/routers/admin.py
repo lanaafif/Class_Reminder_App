@@ -47,7 +47,11 @@ async def admin_dashboard(request: Request, db: db_dependency):
             raise HTTPException(status_code=403, detail="Access denied")
 
         students = db.query(Users).filter(Users.role != "admin").all()
-        return templates.TemplateResponse("admin_dashboard.html", {"request": request, "students": students})
+        return templates.TemplateResponse("admin_dashboard.html", {
+            "request": request,
+            "students": students,
+            "user": user  # ✅ 添加这一行，让 navbar 条件满足
+        })
 
     except:
         from .todos import redirect_to_login
