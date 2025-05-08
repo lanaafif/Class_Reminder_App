@@ -7,6 +7,9 @@
         </div>
         <div class="card-body">
             <form id="editTodoForm">
+                <input type="hidden" id="is-teacher-view" value="{{ is_teacher_view }}">
+                <input type="hidden" id="student-id" value="{{ student_id }}">
+                <input type="hidden" id="todo-id" value="{{ todo.id }}">
                 <div class="form-group">
                     <label>Title</label>
                     <input type="text" class="form-control" name="title" value="{{todo.title}}" required>

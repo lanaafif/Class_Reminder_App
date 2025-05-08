@@ -16,7 +16,11 @@
             };
 
             try {
-                const response = await fetch('/todos/todo', {
+                const isTeacher = document.getElementById("is-teacher-view")?.value === "True";
+                const studentId = document.getElementById("student-id")?.value;
+                const postUrl = isTeacher ? `/admin/user/${studentId}/todo` : '/todos/todo';
+
+                const response = await fetch(postUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +70,11 @@
 
             console.log(`${todoId}`)
 
-            const response = await fetch(`/todos/todo/${todoId}`, {
+            const isTeacher = document.getElementById("is-teacher-view")?.value === "True";
+            const studentId = document.getElementById("student-id")?.value;
+            const updateUrl = isTeacher ? `/admin/user/${studentId}/todo/${todoId}` : `/todos/todo/${todoId}`;
+
+            const response = await fetch(updateUrl, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,6 +82,7 @@
                 },
                 body: JSON.stringify(payload)
             });
+
 
             if (response.ok) {
                 window.location.href = '/todos/todo-page'; // Redirect to the todo page
@@ -98,12 +107,17 @@
                     throw new Error('Authentication token not found');
                 }
 
-                const response = await fetch(`/todos/todo/${todoId}`, {
+                const isTeacher = document.getElementById("is-teacher-view")?.value === "True";
+                const studentId = document.getElementById("student-id")?.value;
+                const deleteUrl = isTeacher ? `/admin/user/${studentId}/todo/${todoId}` : `/todos/todo/${todoId}`;
+
+                const response = await fetch(deleteUrl, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
+
 
                 if (response.ok) {
                     // Handle success

@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from .auth import get_current_user
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from .todos import TodoRequest
+
 
 templates = Jinja2Templates(directory="TodoApp/templates")
 
@@ -79,6 +81,44 @@ async def view_student_todos(request: Request, user_id: int, db: db_dependency):
         return redirect_to_login()
 
 
+@router.get("/user/{student_id}/add-todo-page")
+async def render_add_todo_for_student(request: Request, student_id: int, db: db_dependency):
+    token = request.cookies.get('access_token')
+    from .auth import get_current_user
+    user = await get_current_user(token)
+
+    if user.get("user_role") != "admin":
+        raise HTTPException(status_code=403)
+
+    return templates.TemplateResponse("add-todo.html", {
+        "request": request,
+        "user": user,
+        "is_teacher_view": True,
+        "student_id": student_id
+    })
+
+
+@router.get("/user/{student_id}/edit-todo-page/{todo_id}")
+async def render_edit_todo_for_student(request: Request, student_id: int, todo_id: int, db: db_dependency):
+    token = request.cookies.get('access_token')
+    from .auth import get_current_user
+    user = await get_current_user(token)
+
+    if user.get("user_role") != "admin":
+        raise HTTPException(status_code=403)
+
+    todo = db.query(Todos).filter(Todos.id == todo_id, Todos.owner_id == student_id).first()
+    if not todo:
+        raise HTTPException(status_code=404)
+
+    return templates.TemplateResponse("edit-todo.html", {
+        "request": request,
+        "user": user,
+        "todo": todo,
+        "is_teacher_view": True,
+        "student_id": student_id
+    })
+
 
 ### Endpoints ###
 
@@ -119,4 +159,45 @@ async def delete_todo(db: db_dependency, user: user_dependency, todo_id: int = P
     # todo_model.delete() 不可用，因为 ORM 实例本身没有 delete() 方法。
     # 实例就像被取出的书，无法自己从数据库中删除，必须通过 db.delete(...) 让 session 管理员来删除。
 
+    db.commit()
+
+
+@router.post("/user/{user_id}/todo", status_code=status.HTTP_201_CREATED)
+async def create_todo_for_student(user_id: int, db: db_dependency, request: Request, todo: TodoRequest):
+    token = request.cookies.get('access_token')
+    current_user = await get_current_user(token)
+    if current_user.get("user_role") != "admin":
+        raise HTTPException(status_code=403, detail="Only teachers can do this.")
+
+    todo_model = Todos(**todo.dict(), owner_id=user_id)
+    db.add(todo_model)
+    db.commit()
+
+
+@router.put("/user/{user_id}/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_todo_for_student(user_id: int, todo_id: int, db: db_dependency, request: Request, todo: TodoRequest):
+    token = request.cookies.get('access_token')
+    current_user = await get_current_user(token)
+    if current_user.get("user_role") != "admin":
+        raise HTTPException(status_code=403)
+
+    todo_model = db.query(Todos).filter(Todos.id == todo_id, Todos.owner_id == user_id).first()
+    if not todo_model:
+        raise HTTPException(status_code=404)
+
+    todo_model.title = todo.title
+    todo_model.description = todo.description
+    todo_model.priority = todo.priority
+    todo_model.complete = todo.complete
+    db.commit()
+
+
+@router.delete("/user/{user_id}/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_todo_for_student(user_id: int, todo_id: int, db: db_dependency, request: Request):
+    token = request.cookies.get('access_token')
+    current_user = await get_current_user(token)
+    if current_user.get("user_role") != "admin":
+        raise HTTPException(status_code=403)
+
+    db.query(Todos).filter(Todos.id == todo_id, Todos.owner_id == user_id).delete()
     db.commit()
