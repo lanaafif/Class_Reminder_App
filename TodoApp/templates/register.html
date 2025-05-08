@@ -30,8 +30,8 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Role</label>
-                        <input type="text" class="form-control" name="role" required>
+                        <label>Are you a teacher?</label><br>
+                        <input type="checkbox" id="is-teacher-checkbox"> Yes
                     </div>
                     <div class="form-group col-md-6">
                         <label>Phone Number</label>
@@ -39,6 +39,9 @@
                             required>
                     </div>
                 </div>
+                
+                <!-- 隐藏字段，用于在 JS 中动态赋值 role -->
+                <input type="hidden" name="role" id="hidden-role-field" value="user">
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" class="form-control" name="password" autocomplete="new-password" required>

@@ -180,12 +180,15 @@
                 return;
             }
 
+            const isTeacher = document.getElementById('is-teacher-checkbox').checked;
+            document.getElementById('hidden-role-field').value = isTeacher ? 'admin' : 'user';
+
             const payload = {
                 email: data.email,
                 username: data.username,
                 first_name: data.firstname,
                 last_name: data.lastname,
-                role: data.role,
+                role: isTeacher ? 'admin' : 'user',
                 phone_number: data.phone_number,
                 password: data.password
             };
