@@ -6,6 +6,7 @@ load_dotenv()
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from psycopg2 import sql
 
 
 DATABASE_URL = os.environ.get("DATABASE_URL")

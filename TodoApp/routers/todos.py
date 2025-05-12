@@ -114,7 +114,7 @@ async def read_all(user: user_dependency, db: db_dependency):
 
 @router.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
 async def read_todo(user:user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
-
+    # 假设fastapi没有成功注入user依赖
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
     
@@ -131,7 +131,7 @@ async def create_todo(user: user_dependency, db: db_dependency, todo_request: To
 
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
-    # 在正式接口里这段代码是冗余的（因为已经验证过user了），但为了测试、兼容性和防御性考虑，可以保留这段判断。
+    # 在正式接口里这段代码是多余的吗（因为已经验证过user了），但为了测试、兼容性和防御性考虑，可以保留这段判断。
 
     todo_model = Todos(**todo_request.model_dump(), owner_id=user.get('id'))
     # TodoRequest 是一个 Pydantic Schema（表示请求数据结构）
