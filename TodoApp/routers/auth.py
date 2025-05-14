@@ -33,7 +33,7 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 #refine：
 # 1.
-# /auth/token 是用于“获取 token”的接口，而不是“查看 token”的页面。
+# /auth/token 是用于“获取 token”的 API 接口，而不是“查看 token”的页面。类似@router.post("/token")
 # 用户需要向这个接口提交用户名和密码，后端验证通过后才会生成并返回 token。
 # 所以更准确地说，它是一个 “获取 token（login）” 的 API，而不是一个“查看 token” 的页面。
 
