@@ -50,7 +50,7 @@ async def admin_dashboard(request: Request, db: db_dependency):
         return templates.TemplateResponse("admin_dashboard.html", {
             "request": request,
             "students": students,
-            "user": user  # ✅ 添加这一行，让 navbar 条件满足
+            "user": user  # satisfies the navbar condition
         })
 
     except:
