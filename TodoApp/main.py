@@ -12,13 +12,12 @@ Base.metadata.create_all(bind=engine)
 
 
 app.mount("/static", StaticFiles(directory="TodoApp/static"), name="static") 
-# 给 /static 挂载路径起名字为 static
-# 这样在 templates 中就可以用 url_for("static", path="img/xxx.png") 来引用静态文件了
-# 得到的路径结果是 /static/img/xxx.png
-
+# Mount the /static path and name it "static"
+# This allows referencing static files in templates using url_for("static", path="img/xxx.png")
+# The resulting path is /static/img/xxx.png
 
 @app.get("/")
-def test(request: Request): # Jinja2Templates 需要 request 对象 作为参数 
+def test(request: Request): # Jinja2Templates requires the request object as a parameter
     return RedirectResponse(url="/todos/todo-page", status_code=status.HTTP_302_FOUND)
 
 app.include_router(auth.router)

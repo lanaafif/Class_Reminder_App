@@ -22,28 +22,26 @@ ALGORITHM = 'HS256'  # algorithm used to encode the JWT token
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto") 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token") 
 # 1.
-# /auth/token 是一个登录接口，她是你提交用户名密码后，可以查看已获取的，后端传过来的生成的 token 的接口，
-#   不是一个可以访问没有生成，没有后端传过来的结果的，查看 token 的页面。
-# 你必须提交用户名密码，验证成功后服务器才会生成并返回 token 给你在这个页面。
-# 所以这个页面的最好理解是，get token，而不是check token
-# 2. 
-# OAuth2PasswordBearer 是当这个依赖被某个接口需要时，在接口函数运行前，
-#   fastapi帮你获取前端发来的申请中带的header中的“Authorization”信息--token
-# 如果依赖获取失败了，会有自动error反馈，然后swagger也更清楚这是一个依赖项/依赖函数
+# /auth/token is a login endpoint. After submitting your username and password, you can get the generated token returned by the backend.
+#   It is not a page for viewing tokens that have not been generated or returned by the backend.
+# You must submit your username and password, and only after successful verification will the server generate and return a token to you.
+# So this endpoint is best understood as "get token", not "check token".
+# 2.
+# OAuth2PasswordBearer is a dependency. When this dependency is required by an endpoint,
+#   FastAPI helps you extract the "Authorization" information (the token) from the header of the request before the endpoint function runs.
+# If the dependency fails to get the token, an automatic error will be returned, and Swagger will also clearly show this as a dependency.
 
-#refine：
+#refine:
 # 1.
-# /auth/token 是用于“获取 token”的 API 接口，而不是“查看 token”的页面。类似@router.post("/token")
-# 用户需要向这个接口提交用户名和密码，后端验证通过后才会生成并返回 token。
-# 所以更准确地说，它是一个 “获取 token（login）” 的 API，而不是一个“查看 token” 的页面。
+# /auth/token is an API endpoint for "obtaining a token", not a page for "viewing a token". Similar to @router.post("/token")
+# The user needs to submit a username and password to this endpoint, and the backend will generate and return a token after verification.
+# So more accurately, it is an API for "getting a token (login)", not a page for "viewing a token".
 
 # 2.
-# OAuth2PasswordBearer 是一个依赖项，用于在某个接口运行前，
-# 由 FastAPI 自动从请求头中提取出 "Authorization" 字段里的 Bearer Token。
-# 如果缺少 token 或格式不正确，FastAPI 会自动返回 401 错误。
-# 同时，这个依赖还能帮助 Swagger UI 显示认证按钮，提升接口文档的可用性。
-
-
+# OAuth2PasswordBearer is a dependency that, before an endpoint runs,
+# is used by FastAPI to automatically extract the Bearer Token from the "Authorization" field in the request header.
+# If the token is missing or the format is incorrect, FastAPI will automatically return a 401 error.
+# At the same time, this dependency helps Swagger UI display the authentication button, improving the usability of the API docs.
 
 class CreateUserRequest(BaseModel):
     username: str
@@ -70,8 +68,8 @@ def get_db():
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
-# 这里的等号不是赋值，而是给一个类型对象起了一个变量名以供后面复用，视作一个类型，没有赋值
-# Annotated[...] 本质上是 “类型 + 附加元信息（metadata）” 的一种组合工具，并不限于依赖注入的场景。
+# The equal sign here is not assignment, but gives a type object a variable name for reuse later, treated as a type, not a value.
+# Annotated[...] is essentially a tool for combining "type + additional metadata", not limited to dependency injection scenarios.
 
 templates = Jinja2Templates(directory="TodoApp/templates") 
 
@@ -92,7 +90,7 @@ def render_register_page(request: Request):
 
 
 def authenticate_user(db, username: str, password: str):
-    # db: Session不是必须的，Python 是动态语言，你可以不给类型
+    # db: Session is not required, Python is a dynamic language, you can omit the type
     user = db.query(Users).filter(Users.username == username).first()
     if not user:
         return False
@@ -126,10 +124,10 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
-    # Annotated[...] 是一种类型包装器，它“告诉 FastAPI”：这个参数值是某个类型，来自某个依赖函数
-    # 所以
-    # 此时的db有Annotated的type，而db_dependency来自依赖函数，
-    #   所以db变成了fastapi会自动注入的依赖项，而不是一个参数了
+    # Annotated[...] is a type wrapper that "tells FastAPI": this parameter is of a certain type and comes from a dependency function
+    # So
+    # At this point, db has the Annotated type, and db_dependency comes from a dependency function,
+    #   so db becomes a dependency that FastAPI will automatically inject, not a regular parameter
     create_user_model = Users(
         username=create_user_request.username,
         email=create_user_request.email,

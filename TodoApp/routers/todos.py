@@ -51,15 +51,15 @@ def redirect_to_login():
 async def render_todo_page(request: Request, db: db_dependency):
     try:
         user = await get_current_user(request.cookies.get('access_token'))
-        # request 就是“这次浏览器发来的 HTTP 请求的完整信息包”，
-        # 你可以用它查到任何细节，包括 cookie、参数、headers、body、IP 等等。
+        # request is the complete HTTP request information package sent by the browser this time,
+        # you can use it to check any details, including cookies, parameters, headers, body, IP, etc.
 
         if user is None:
             return redirect_to_login()
         
         todos = db.query(Todos).filter(Todos.owner_id == user.get('id')).all()
-        # ORM对象（object） → 用 . 点操作符访问属性
-        # 字典（dict） → 用 ['key'] 或 .get('key') 访问键值对 (return {'username': username, 'id': user_id})
+        # ORM object (object) → access attributes with dot operator
+        # Dictionary (dict) → access key-value pairs with ['key'] or .get('key') (return {'username': username, 'id': user_id})
 
         if user.get("user_role") == "admin":
             return RedirectResponse(url="/admin/dashboard", status_code=status.HTTP_302_FOUND)
@@ -114,13 +114,13 @@ async def read_all(user: user_dependency, db: db_dependency):
 
 @router.get("/todo/{todo_id}", status_code=status.HTTP_200_OK)
 async def read_todo(user:user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
-    # 假设fastapi没有成功注入user依赖
+    # Suppose FastAPI did not successfully inject the user dependency
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
     
     todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).first()
     # db.query(Todos) just creates a query object, it doesn't execute the query 
-    # "创建了一个可链式调用的查询语句构建器"
+    # "Creates a chainable query statement builder"
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail="Todo not found")
@@ -131,12 +131,13 @@ async def create_todo(user: user_dependency, db: db_dependency, todo_request: To
 
     if user is None:
         raise HTTPException(status_code=401, detail='Authentication Failed')
-    # 在正式接口里这段代码是多余的吗（因为已经验证过user了），但为了测试、兼容性和防御性考虑，可以保留这段判断。
+    # In a formal API, this code may be redundant (since the user has already been verified), 
+    # but for testing, compatibility, and defensive programming, this check can be kept.
 
     todo_model = Todos(**todo_request.model_dump(), owner_id=user.get('id'))
-    # TodoRequest 是一个 Pydantic Schema（表示请求数据结构）
-    # Todos 是一个 SQLAlchemy Model（表示数据库中的表结构）
-    # todo_model 是一个 SQLAlchemy Model 实例/instance（表示数据库中即将插入的一行）
+    # TodoRequest is a Pydantic Schema (represents the request data structure)
+    # Todos is a SQLAlchemy Model (represents the table structure in the database)
+    # todo_model is a SQLAlchemy Model instance (represents a row to be inserted into the database)
     
     db.add(todo_model)
     db.commit()
@@ -153,10 +154,10 @@ async def update_todo(user: user_dependency, db: db_dependency,
     if todo_model is None:
         raise HTTPException(status_code=404, detail="Todo not found")
     
-    # we cannot create a new updated todo and delete the old one b/c sqlalchemy try to increment the id 
-    #  so the new id will be different from the old one
+    # we cannot create a new updated todo and delete the old one because SQLAlchemy will try to increment the id 
+    # so the new id will be different from the old one
     # so we should directly update the existing todo 
-    # 我们不能也不应该手动设置id
+    # We cannot and should not manually set the id
     todo_model.title = todo_request.title
     todo_model.description = todo_request.description
     todo_model.priority = todo_request.priority

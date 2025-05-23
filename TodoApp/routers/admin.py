@@ -61,7 +61,7 @@ async def admin_dashboard(request: Request, db: db_dependency):
 @router.get("/user/{user_id}/todos-page")
 async def view_student_todos(request: Request, user_id: int, db: db_dependency):
     try:
-        # 从 cookie 中取 token，并验证是否是 admin
+        # Get token from cookie and verify if user is admin
         token = request.cookies.get('access_token')
         from .auth import get_current_user
         current_user = await get_current_user(token)
@@ -69,7 +69,7 @@ async def view_student_todos(request: Request, user_id: int, db: db_dependency):
         if current_user.get("user_role") != "admin":
             raise HTTPException(status_code=403, detail="Access denied")
 
-        # 查询目标学生的 todo
+        # Query target student's todos
         todos = db.query(Todos).filter(Todos.owner_id == user_id).all()
         student = db.query(Users).filter(Users.id == user_id).first()
 
@@ -142,11 +142,10 @@ async def read_all_users(db: db_dependency, user: user_dependency):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
     
     return db.query(Users).all()
-    # JWT的本质：服务器/数据库不存token，每次请求只需要验证 token 本身成立即可，无需和数据库核对
-    # 但是服务器仍然需要存user的基础信息用于首次登陆时给用户创建token，但是后续就无需访问数据库的用户信息来验证
-    # 因为JWT登陆只需验证JWT本身，不检查数据库，所以他是无状态的（stateless）-- 服务器不保存任何登录状态和信息
-    # 因此，非用户本人拿到token也可以直接验证成功；数据库的用户的role改变了，用token还是可以以之前的身份访问
-
+    # The essence of JWT: the server/database does not store the token, each request only needs to verify the token itself, no need to check with the database
+    # However, the server still needs to store basic user info to create the token at first login, but afterwards, user info in the database is not needed for verification
+    # Because JWT login only verifies the JWT itself, not the database, so it is stateless -- the server does not save any login state or info
+    # Therefore, if someone else gets the token, they can also verify successfully; if the user's role in the database changes, the token can still access with the previous role
 
 
 @router.delete('/todos/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
@@ -159,9 +158,9 @@ async def delete_todo(db: db_dependency, user: user_dependency, todo_id: int = P
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Todo not found")
     
     db.query(Todos).filter(Todos.id == todo_id).delete()
-    # db.delete(todo_model)也可以，不行的是update中创建一条新的放回去
-    # todo_model.delete() 不可用，因为 ORM 实例本身没有 delete() 方法。
-    # 实例就像被取出的书，无法自己从数据库中删除，必须通过 db.delete(...) 让 session 管理员来删除。
+    # db.delete(todo_model) is also possible, but not creating a new one in update and putting it back
+    # todo_model.delete() is not available, because ORM instances themselves do not have a delete() method.
+    # The instance is like a book taken out, it cannot delete itself from the database, it must be deleted by db.delete(...) through the session manager.
 
     db.commit()
 
