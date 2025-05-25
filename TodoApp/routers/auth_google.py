@@ -4,6 +4,7 @@ from starlette.config import Config
 from fastapi.responses import RedirectResponse
 from datetime import timedelta
 import os
+import traceback
 
 from TodoApp.models import Users
 from TodoApp.database import SessionLocal
@@ -25,9 +26,12 @@ oauth.register(
 
 @router.get("/auth/login")
 async def login(request: Request):
-    redirect_uri = request.url_for("auth_callback")
+    base_url = str(request.base_url)
+    if base_url.startswith("http://localhost") or base_url.startswith("http://127.0.0.1"):
+        redirect_uri = "http://localhost:8000/auth/callback"
+    else:
+        redirect_uri = "https://todo-list-app-yeui.onrender.com/auth/callback"
     return await oauth.google.authorize_redirect(request, redirect_uri)
-
 
 @router.get("/auth/callback")
 async def auth_callback(request: Request):
@@ -37,7 +41,11 @@ async def auth_callback(request: Request):
         token = await oauth.google.authorize_access_token(request)
         print("✅ Got token successfully")
 
-        user_info = token["userinfo"]
+        # Try to get userinfo or fallback to id_token
+        user_info = token.get("userinfo")
+        if not user_info:
+            user_info = await oauth.google.parse_id_token(request, token)
+
         print("✅ Got user info:", user_info.get("email"), "|", user_info.get("name"))
 
         email = user_info["email"]
@@ -55,7 +63,7 @@ async def auth_callback(request: Request):
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                hashed_password="",
+                hashed_password="",  # OAuth user has no password
                 role="user",
                 is_active=True,
                 phone_number=""
@@ -74,9 +82,18 @@ async def auth_callback(request: Request):
         print("✅ Issued JWT for", db_user.username)
 
         response = RedirectResponse(url="/todos/todo-page")
-        response.set_cookie(key="access_token", value=jwt_token, httponly=True)
+        # httponly=True是给后端读的，前端读不到。因为cookie在每次api请求中都会自动附带，所以后端可以从request中获取cookies的信息
+        # response.set_cookie(key="access_token", value=jwt_token, httponly=True) 
+        response.set_cookie(key="access_token", value=jwt_token, httponly=False)  # 给 JS 读
         return response
 
     except Exception as e:
         print("❌ Error in auth_callback:", e)
-        raise e
+        traceback.print_exc()
+        return RedirectResponse(url="/auth/login-page")  # Fallback to login page
+
+@router.get("/auth/logout")
+async def logout(request: Request):
+    response = RedirectResponse(url="/auth/login-page")
+    response.delete_cookie("access_token")
+    return response
