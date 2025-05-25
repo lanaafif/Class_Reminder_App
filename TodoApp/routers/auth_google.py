@@ -39,14 +39,13 @@ async def auth_callback(request: Request):
         print("🔄 Received Google callback")
 
         token = await oauth.google.authorize_access_token(request)
-        print("✅ Got token successfully")
+        # Only keep the most critical print for debugging
+        print("✅ Got user info:", token.get("userinfo", {}).get("email"), "|", token.get("userinfo", {}).get("name"))
 
         # Try to get userinfo or fallback to id_token
         user_info = token.get("userinfo")
         if not user_info:
             user_info = await oauth.google.parse_id_token(request, token)
-
-        print("✅ Got user info:", user_info.get("email"), "|", user_info.get("name"))
 
         email = user_info["email"]
         username = email.split("@")[0]
@@ -57,7 +56,6 @@ async def auth_callback(request: Request):
         db_user = db.query(Users).filter(Users.email == email).first()
 
         if not db_user:
-            print("🆕 Registering new user:", email)
             db_user = Users(
                 username=username,
                 email=email,
@@ -79,12 +77,10 @@ async def auth_callback(request: Request):
             expires_delta=timedelta(minutes=20)
         )
 
-        print("✅ Issued JWT for", db_user.username)
-
         response = RedirectResponse(url="/todos/todo-page")
-        # httponly=True是给后端读的，前端读不到。因为cookie在每次api请求中都会自动附带，所以后端可以从request中获取cookies的信息
+        # httponly=True is for backend only, frontend cannot read it. Since cookies are automatically included in every API request, the backend can get cookie info from the request.
         # response.set_cookie(key="access_token", value=jwt_token, httponly=True) 
-        response.set_cookie(key="access_token", value=jwt_token, httponly=False)  # 给 JS 读
+        response.set_cookie(key="access_token", value=jwt_token, httponly=False)  # Allow JS to read
         return response
 
     except Exception as e:
