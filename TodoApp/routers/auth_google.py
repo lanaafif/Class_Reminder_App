@@ -11,7 +11,7 @@ from TodoApp.routers.auth import create_access_token
 
 router = APIRouter()
 
-# OAuth 设置
+# OAuth settings
 config = Config(environ=os.environ)
 oauth = OAuth(config)
 
