@@ -32,4 +32,4 @@ app.include_router(admin.router)
 app.include_router(users.router)
 app.include_router(auth_google.router)
 
-print("GOOGLE_CLIENT_ID:", os.getenv("GOOGLE_CLIENT_ID"))
+print("GOOGLE_CLIENT:", os.getenv("GOOGLE_CLIENT"))
