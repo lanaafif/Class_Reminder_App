@@ -1,0 +1,254 @@
+{
+  "id": "72fb49b3-0a15-43f1-a638-ef83b8528a8f",
+  "version": "2.0",
+  "name": "uji selenium",
+  "url": "https://todo-list-app-yeui.onrender.com",
+  "tests": [{
+    "id": "c4e118d6-38e1-422b-b3d7-4c1249a7b407",
+    "name": "uji selenium",
+    "commands": [{
+      "id": "69cbb7c6-1acb-4c28-92b6-c9003ff7c42f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b7f76ef5-c5bd-43bf-88a4-90849086f339",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1453x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7d2f48f6-8933-4b96-8b95-82515f9244ff",
+      "comment": "",
+      "command": "click",
+      "target": "css=.link-icon > svg",
+      "targets": [
+        ["css=.link-icon > svg", "css:finder"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win9801",
+      "windowTimeout": 2000
+    }, {
+      "id": "3f60b28f-3d5a-46fb-bd9d-b901ae575a5e",
+      "comment": "",
+      "command": "storeWindowHandle",
+      "target": "root",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "47fee99c-b523-491a-9ac9-0fdfbf5e213e",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win9801}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c197ce97-a09d-4939-9af0-88f2a36c4bc8",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Product",
+      "targets": [
+        ["linkText=Product", "linkText"],
+        ["css=.group\\/dropdown:nth-child(1) > .group", "css:finder"],
+        ["xpath=//a[contains(@href, '#')]", "xpath:href"],
+        ["xpath=//ul/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Product')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4ed8365a-9ac4-4326-bcfe-32778a759220",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Customers",
+      "targets": [
+        ["linkText=Customers", "linkText"],
+        ["css=li:nth-child(3) > .px-\\[--nav-bar-px\\]", "css:finder"],
+        ["xpath=//a[contains(@href, '/customers')]", "xpath:href"],
+        ["xpath=//nav/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Customers')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf91ad19-724e-4fc6-90f4-19c6fee77122",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Customers",
+      "targets": [
+        ["linkText=Customers", "linkText"],
+        ["css=li:nth-child(3) > .px-\\[--nav-bar-px\\]", "css:finder"],
+        ["xpath=//a[contains(@href, '/customers')]", "xpath:href"],
+        ["xpath=//nav/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Customers')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d8f77669-fb3f-4399-90c3-60a80f1b54cc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.flex:nth-child(3) > .ease:nth-child(1) > .ease:nth-child(2)",
+      "targets": [
+        ["css=.flex:nth-child(3) > .ease:nth-child(1) > .ease:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div[2]/a/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'Get Started for Free')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "52e1c6db-147c-4c1d-8ee5-851053e5f2ce",
+      "comment": "",
+      "command": "click",
+      "target": "css=.type-interface-01:nth-child(4)",
+      "targets": [
+        ["css=.type-interface-01:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div/div/button[4]", "xpath:idRelative"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'Google')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c4b27334-40a7-4103-9b5e-fb3a7ae8dc80",
+      "comment": "",
+      "command": "click",
+      "target": "id=identifierId",
+      "targets": [
+        ["id=identifierId", "id"],
+        ["name=identifier", "name"],
+        ["css=#identifierId", "css:finder"],
+        ["xpath=//input[@id='identifierId']", "xpath:attributes"],
+        ["xpath=//div[@id='yDmH0d']/c-wiz/div/div[2]/div/div/div/form/span/section/div/div/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "09d64cee-52b0-4299-bb9b-52464ac9c64d",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${root}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ae66056f-c0f8-4aa6-9a39-def86fc9806b",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win9801}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9710ca9c-d565-4815-aaf1-ef9aa8c5dfbb",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign in",
+      "targets": [
+        ["linkText=Sign in", "linkText"],
+        ["css=div:nth-child(1) > .font-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign in')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign in')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d667200-92ca-4f52-9e14-cf5a95423fb8",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Sign up",
+      "targets": [
+        ["linkText=Sign up", "linkText"],
+        ["css=div:nth-child(2) > .font-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign up')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/register')]", "xpath:href"],
+        ["xpath=//div/div/div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign up')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b0a1db3-f4e2-42ae-9557-cbf30d3b37da",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Sign up",
+      "targets": [
+        ["linkText=Sign up", "linkText"],
+        ["css=div:nth-child(2) > .font-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign up')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/register')]", "xpath:href"],
+        ["xpath=//div/div/div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign up')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "567c72bb-4f0d-48bb-8692-45b1c1b1a3cf",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign in with SSO",
+      "targets": [
+        ["linkText=Sign in with SSO", "linkText"],
+        ["css=p > .font-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign in with SSO')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div[2]/p/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/sso')]", "xpath:href"],
+        ["xpath=//p/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign in with SSO')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "aab83d29-abf8-4b6a-a943-73aca64f45e6",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Sign in with password or another provider",
+      "targets": [
+        ["linkText=Sign in with password or another provider", "linkText"],
+        ["css=.font-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Sign in with password or another provider')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/p/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//p/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Sign in with password or another provider')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "61084ffa-91fe-4f1c-9072-42931d3c8f6b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.button-secondary-text:nth-child(1)",
+      "targets": [
+        ["css=.button-secondary-text:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'GitHub')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e45bad85-f3be-4251-ac72-e57260bd2be6",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9d270259-7c14-4e61-86ce-982fcd747e87",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${root}",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "a755ba2c-55a7-499d-b177-bf10702d6e9d",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["c4e118d6-38e1-422b-b3d7-4c1249a7b407"]
+  }],
+  "urls": ["https://todo-list-app-yeui.onrender.com/"],
+  "plugins": []
+}
