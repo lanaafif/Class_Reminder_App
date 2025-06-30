@@ -1,0 +1,450 @@
+Laporan Lengkap System Usability Scale (SUS)
+Penjelasan System Usability Scale (SUS)
+System Usability Scale (SUS) adalah kuesioner sederhana dengan 10 item yang memberikan ukuran kebergunaan sistem secara cepat dan dapat diandalkan. Ini banyak digunakan dan memberikan skor tunggal yang mewakili kebergunaan secara keseluruhan.
+
+Cara kerjanya:
+Responden menilai persetujuan mereka dengan 10 pernyataan tentang sistem pada skala Likert 5 poin:
+
+1 = Sangat Tidak Setuju
+
+2 = Tidak Setuju
+
+3 = Netral
+
+4 = Setuju
+
+5 = Sangat Setuju
+
+10 Pernyataan SUS:
+
+Saya rasa saya akan sering menggunakan sistem ini.
+
+Saya merasa sistem ini rumit secara tidak perlu.
+
+Saya merasa sistem ini mudah digunakan.
+
+Saya rasa saya akan membutuhkan bantuan dari seorang ahli teknis untuk dapat menggunakan sistem ini.
+
+Saya merasa berbagai fungsi dalam sistem ini terintegrasi dengan baik.
+
+Saya rasa ada terlalu banyak inkonsistensi dalam sistem ini.
+
+Saya membayangkan bahwa kebanyakan orang akan belajar menggunakan sistem ini dengan sangat cepat.
+
+Saya merasa sistem ini sangat sulit digunakan.
+
+Saya merasa sangat percaya diri menggunakan sistem ini.
+
+Saya perlu mempelajari banyak hal sebelum saya bisa menggunakan sistem ini.
+
+Perhitungan Skor:
+
+Untuk item bernomor ganjil (1, 3, 5, 7, 9): Kurangi 1 dari skor responden.
+
+Contoh: Jika skornya 5, skor yang disesuaikan adalah 5−1=4.
+
+Untuk item bernomor genap (2, 4, 6, 8, 10): Kurangi skor responden dari 5.
+
+Contoh: Jika skornya 1, skor yang disesuaikan adalah 5−1=4. Jika skornya 5, skor yang disesuaikan adalah 5−5=0.
+
+Jumlahkan semua skor yang disesuaikan untuk ke-10 item untuk setiap responden. Jumlah ini akan berkisar antara 0 hingga 40.
+
+Kalikan jumlah tersebut dengan 2.5 untuk mengubah skor ke skala 0-100.
+
+Rumus: Skor SUS=(∑skor disesuaikan)×2.5
+
+Interpretasi Skor SUS (Skala Adjektiva):
+
+Meskipun skor itu sendiri penting, interpretasinya dengan skala adjektiva membantu memahami maknanya:
+
+Rentang Skor SUS
+
+Interpretasi Adjektiva
+
+85 - 100
+
+Sangat Baik (Excellent)
+
+71 - 84
+
+Baik (Good)
+
+51 - 70
+
+Cukup (OK)
+
+26 - 50
+
+Buruk (Poor)
+
+0 - 25
+
+Tidak Dapat Diterima (Unacceptable)
+
+Catatan Penting:
+
+Skor Rata-rata: Rata-rata skor SUS di banyak penelitian adalah sekitar 68. Skor di atas 68 umumnya dianggap "di atas rata-rata," dan skor di bawah 68 adalah "di bawah rata-rata."
+
+Ukuran Sampel Kecil: Dengan hanya 5 responden, hasilnya mungkin tidak kuat secara statistik, tetapi tetap dapat memberikan wawasan berharga untuk penilaian kebergunaan awal.
+
+Kuesioner System Usability Scale (SUS)
+Mohon tunjukkan tingkat persetujuan Anda dengan setiap pernyataan dengan melingkari angka yang paling sesuai dengan pendapat Anda, di mana:
+
+1 = Sangat Tidak Setuju
+2 = Tidak Setuju
+3 = Netral
+4 = Setuju
+5 = Sangat Setuju
+
+Saya rasa saya akan sering menggunakan sistem ini.
+1    2    3    4    5
+
+Saya merasa sistem ini rumit secara tidak perlu.
+1    2    3    4    5
+
+Saya merasa sistem ini mudah digunakan.
+1    2    3    4    5
+
+Saya rasa saya akan membutuhkan bantuan dari seorang ahli teknis untuk dapat menggunakan sistem ini.
+1    2    3    4    5
+
+Saya merasa berbagai fungsi dalam sistem ini terintegrasi dengan baik.
+1    2    3    4    5
+
+Saya rasa ada terlalu banyak inkonsistensi dalam sistem ini.
+1    2    3    4    5
+
+Saya membayangkan bahwa kebanyakan orang akan belajar menggunakan sistem ini dengan sangat cepat.
+1    2    3    4    5
+
+Saya merasa sistem ini sangat sulit digunakan.
+1    2    3    4    5
+
+Saya merasa sangat percaya diri menggunakan sistem ini.
+1    2    3    4    5
+
+Saya perlu mempelajari banyak hal sebelum saya bisa menggunakan sistem ini.
+1    2    3    4    5
+
+Data Responden Kuesioner SUS (Contoh)
+Berikut adalah contoh bagaimana Anda dapat merekam tanggapan dari 5 responden Anda. Setiap baris mewakili tanggapan satu responden untuk 10 pertanyaan SUS.
+
+Responden 1:
+
+4
+
+2
+
+5
+
+1
+
+4
+
+2
+
+5
+
+1
+
+4
+
+1
+
+Responden 2:
+
+3
+
+3
+
+4
+
+2
+
+3
+
+3
+
+4
+
+2
+
+3
+
+2
+
+Responden 3:
+
+5
+
+1
+
+5
+
+1
+
+5
+
+1
+
+5
+
+1
+
+5
+
+1
+
+Responden 4:
+
+3
+
+4
+
+3
+
+3
+
+2
+
+4
+
+3
+
+4
+
+2
+
+4
+
+Responden 5:
+
+4
+
+1
+
+4
+
+2
+
+4
+
+1
+
+4
+
+2
+
+4
+
+1
+
+Perhitungan dan Interpretasi Skor SUS
+Mari kita hitung skor SUS untuk setiap responden berdasarkan data yang diberikan dan interpretasikan skalanya.
+
+Aturan Penyesuaian Skor:
+
+Item Ganjil (1, 3, 5, 7, 9): Skor Disesuaikan=Skor Responden−1
+
+Item Genap (2, 4, 6, 8, 10): Skor Disesuaikan=5−Skor Responden
+
+Formula SUS Score: (∑Skor Disesuaikan)×2.5
+
+Responden 1
+Skor Mentah: (4, 2, 5, 1, 4, 2, 5, 1, 4, 1)
+
+Skor Disesuaikan:
+
+Item 1: 4−1=3
+
+Item 2: 5−2=3
+
+Item 3: 5−1=4
+
+Item 4: 5−1=4
+
+Item 5: 4−1=3
+
+Item 6: 5−2=3
+
+Item 7: 5−1=4
+
+Item 8: 5−1=4
+
+Item 9: 4−1=3
+
+Item 10: 5−1=4
+
+Total Skor Disesuaikan: 3+3+4+4+3+3+4+4+3+4=35
+
+Skor SUS: 35×2.5=87.5
+
+Interpretasi: Sangat Baik (Excellent)
+
+Responden 2
+Skor Mentah: (3, 3, 4, 2, 3, 3, 4, 2, 3, 2)
+
+Skor Disesuaikan:
+
+Item 1: 3−1=2
+
+Item 2: 5−3=2
+
+Item 3: 4−1=3
+
+Item 4: 5−2=3
+
+Item 5: 3−1=2
+
+Item 6: 5−3=2
+
+Item 7: 4−1=3
+
+Item 8: 5−2=3
+
+Item 9: 3−1=2
+
+Item 10: 5−2=3
+
+Total Skor Disesuaikan: 2+2+3+3+2+2+3+3+2+3=25
+
+Skor SUS: 25×2.5=62.5
+
+Interpretasi: Cukup (OK)
+
+Responden 3
+Skor Mentah: (5, 1, 5, 1, 5, 1, 5, 1, 5, 1)
+
+Skor Disesuaikan:
+
+Item 1: 5−1=4
+
+Item 2: 5−1=4
+
+Item 3: 5−1=4
+
+Item 4: 5−1=4
+
+Item 5: 5−1=4
+
+Item 6: 5−1=4
+
+Item 7: 5−1=4
+
+Item 8: 5−1=4
+
+Item 9: 5−1=4
+
+Item 10: 5−1=4
+
+Total Skor Disesuaikan: 4×10=40
+
+Skor SUS: 40×2.5=100
+
+Interpretasi: Sangat Baik (Excellent)
+
+Responden 4
+Skor Mentah: (3, 4, 3, 3, 2, 4, 3, 4, 2, 4)
+
+Skor Disesuaikan:
+
+Item 1: 3−1=2
+
+Item 2: 5−4=1
+
+Item 3: 3−1=2
+
+Item 4: 5−3=2
+
+Item 5: 2−1=1
+
+Item 6: 5−4=1
+
+Item 7: 3−1=2
+
+Item 8: 5−4=1
+
+Item 9: 2−1=1
+
+Item 10: 5−4=1
+
+Total Skor Disesuaikan: 2+1+2+2+1+1+2+1+1+1=14
+
+Skor SUS: 14×2.5=35
+
+Interpretasi: Buruk (Poor)
+
+Responden 5
+Skor Mentah: (4, 1, 4, 2, 4, 1, 4, 2, 4, 1)
+
+Skor Disesuaikan:
+
+Item 1: 4−1=3
+
+Item 2: 5−1=4
+
+Item 3: 4−1=3
+
+Item 4: 5−2=3
+
+Item 5: 4−1=3
+
+Item 6: 5−1=4
+
+Item 7: 4−1=3
+
+Item 8: 5−2=3
+
+Item 9: 4−1=3
+
+Item 10: 5−1=4
+
+Total Skor Disesuaikan: 3+4+3+3+3+4+3+3+3+4=33
+
+Skor SUS: 33×2.5=82.5
+
+Interpretasi: Baik (Good)
+
+Ringkasan Skor dan Interpretasi
+Responden
+
+Skor SUS
+
+Interpretasi
+
+1
+
+87.5
+
+Sangat Baik
+
+2
+
+62.5
+
+Cukup
+
+3
+
+100
+
+Sangat Baik
+
+4
+
+35.0
+
+Buruk
+
+5
+
+82.5
+
+Baik
+
+Rata-rata Skor SUS Keseluruhan
+Total Skor SUS: 87.5+62.5+100+35.0+82.5=367.5
+
+Rata-rata Skor SUS: 367.5/5=73.5
+
+Interpretasi Rata-rata: Skor rata-rata 73.5 berada dalam kategori Baik (Good).
